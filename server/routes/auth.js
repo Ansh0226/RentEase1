@@ -66,4 +66,40 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
   }
 });
 
+
+
+// API for Login 
+router.post("/login", async (req, res) => {
+    try {
+        // take the information from the form
+        const { email, password } = req.body;
+
+
+        // check if user exist
+        const user = await User.findOne({ email });
+        if (!user) {
+          return res.status(409).json({ message: "Invalid email or User doesn't  exist!" });
+        }
+
+        /* compare the password with the hash passward */
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            return res.status(400).json({message:"Invalid Credential"})
+        }
+        
+        // generate JWT token
+        // jwt_ secret kuch bhi lelo 
+        //token login hone ke baad generate karenge taaki uski help se 
+        //apan koi bhi kaam karapye uss particular user ke liye 
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+        delete user.password;
+
+        res.status(200).json({ token, user });
+
+
+    } catch (err) {
+          console.log(err);
+          res.status(500).json({ error: err.message });
+    }
+})
 module.exports = router;

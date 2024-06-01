@@ -134,7 +134,7 @@ const handleSubmit = async (e) => {
 
                <button type="submit" disabled={!passwordMatch}>REGISTER</button>
             </form>
-            <a href="/">Already have an Account? Log In here</a>
+            <a href="/login">Already have an Account? Log In here</a>
          </div>
       </div>
    );
