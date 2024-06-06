@@ -1,58 +1,54 @@
-import React from 'react'
-import "../styles/Login.scss"
-import { useState } from 'react';
+import React, { useState } from "react";
+import "../styles/Login.scss";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setLogin } from "../redux/state";
-import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
-const LoginPage = () => {
 
-  // useStates for update value throw input 
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  // function for connect backend throw API
-  const handleSubmit = async (e) => { 
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     try {
-      // Api for login 
-      const response = await fetch ("http://localhost:3001/auth/login", {
+      const response = await fetch("http://localhost:3001/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
-      })
+        body: JSON.stringify({ email, password }),
+      });
 
-      // Get data after fetching
-      // by this we get user and token  
-      const loggedIn = await response.json()
+      const result = await response.json();
 
-      if (loggedIn) {
-        dispatch (
+      if (response.ok) {
+        dispatch(
           setLogin({
-            user: loggedIn.user,
-            token: loggedIn.token
+            user: result.user,
+            token: result.token,
           })
-        )
-        navigate("/")
+        );
+        navigate("/");
+      } else {
+        setError(result.message); // Display error message from backend
       }
-
     } catch (err) {
-      console.log("Login failed", err.message)
+      console.log("Login failed", err.message);
+      setError("Login failed. Please try again.");
     }
-  }
-  
+  };
 
-// login form 
   return (
     <div className="login">
       <div className="login_content">
         <form className="login_content_form" onSubmit={handleSubmit}>
+          {error && <div className="error">{error}</div>}{" "}
+          {/* Display error message */}
           <input
             type="email"
             placeholder="Email"
@@ -75,4 +71,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage
+export default LoginPage;
