@@ -1,19 +1,21 @@
 import "../styles/CreateListing.scss";
 import Navbar from "../components/Navbar";
 import { categories, types, facilities } from "../data";
+
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import variables from "../styles/variables.scss";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useEffect, useState } from "react";
 import { IoIosImages } from "react-icons/io";
+import { useState } from "react";
 import { BiTrash } from "react-icons/bi";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CreateListing = () => {
-  const [photos, setPhotos] = useState([]);
   const [category, setCategory] = useState("");
   const [type, setType] = useState("");
-  // Location section
 
+  /* LOCATION */
   const [formLocation, setFormLocation] = useState({
     streetAddress: "",
     aptSuite: "",
@@ -29,9 +31,7 @@ const CreateListing = () => {
       [name]: value,
     });
   };
-  // console.log(formLocation)
 
-  //basic counts
   /* BASIC COUNTS */
   const [guestCount, setGuestCount] = useState(1);
   const [bedroomCount, setBedroomCount] = useState(1);
@@ -50,10 +50,12 @@ const CreateListing = () => {
       setAmenities((prev) => [...prev, facility]);
     }
   };
-  // console.log(amenities)
+
+  /* UPLOAD, DRAG & DROP, REMOVE PHOTOS */
+  const [photos, setPhotos] = useState([]);
 
   const handleUploadPhotos = (e) => {
-    const newPhotos = Array.from(e.target.files);
+    const newPhotos = e.target.files;
     setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
   };
 
@@ -73,13 +75,77 @@ const CreateListing = () => {
     );
   };
 
+  /* DESCRIPTION */
+  const [formDescription, setFormDescription] = useState({
+    title: "",
+    description: "",
+    highlight: "",
+    highlightDesc: "",
+    price: 0,
+  });
+
+  const handleChangeDescription = (e) => {
+    const { name, value } = e.target;
+    setFormDescription({
+      ...formDescription,
+      [name]: value,
+    });
+  };
+
+  const creatorId = useSelector((state) => state.user._id);
+
+  const navigate = useNavigate();
+
+  const handlePost = async (e) => {
+    e.preventDefault();
+
+    try {
+      /* Create a new FormData onject to handle file uploads */
+      const listingForm = new FormData();
+      listingForm.append("creator", creatorId);
+      listingForm.append("category", category);
+      listingForm.append("type", type);
+      listingForm.append("streetAddress", formLocation.streetAddress);
+      listingForm.append("aptSuite", formLocation.aptSuite);
+      listingForm.append("city", formLocation.city);
+      listingForm.append("province", formLocation.province);
+      listingForm.append("country", formLocation.country);
+      listingForm.append("guestCount", guestCount);
+      listingForm.append("bedroomCount", bedroomCount);
+      listingForm.append("bedCount", bedCount);
+      listingForm.append("bathroomCount", bathroomCount);
+      listingForm.append("amenities", amenities);
+      listingForm.append("title", formDescription.title);
+      listingForm.append("description", formDescription.description);
+      listingForm.append("highlight", formDescription.highlight);
+      listingForm.append("highlightDesc", formDescription.highlightDesc);
+      listingForm.append("price", formDescription.price);
+
+      /* Append each selected photos to the FormData object */
+      photos.forEach((photo) => {
+        listingForm.append("listingPhotos", photo);
+      });
+
+      /* Send a POST request to server */
+      const response = await fetch("http://localhost:3001/properties/create", {
+        method: "POST",
+        body: listingForm,
+      });
+
+      if (response.ok) {
+        navigate("/");
+      }
+    } catch (err) {
+      console.log("Publish Listing failed", err.message);
+    }
+  };
   return (
     <>
       <Navbar />
 
       <div className="create-listing">
         <h1>Publish Your Place</h1>
-        <form>
+        <form onSubmit={handlePost}>
           <div className="create-listing_step1">
             <h2>Step 1: Tell us about your place</h2>
             <hr />
@@ -98,6 +164,7 @@ const CreateListing = () => {
                 </div>
               ))}
             </div>
+
             <h3>What type of place will guests have?</h3>
             <div className="type-list">
               {types?.map((item, index) => (
@@ -114,6 +181,7 @@ const CreateListing = () => {
                 </div>
               ))}
             </div>
+
             <h3>Where's your place located?</h3>
             <div className="full">
               <div className="location">
@@ -128,6 +196,7 @@ const CreateListing = () => {
                 />
               </div>
             </div>
+
             <div className="half">
               <div className="location">
                 <p>Apartment, Suite, etc. (if applicable)</p>
@@ -177,6 +246,7 @@ const CreateListing = () => {
                 />
               </div>
             </div>
+
             <h3>Share some basics about your place</h3>
             <div className="basics">
               <div className="basic">
@@ -205,6 +275,7 @@ const CreateListing = () => {
                   />
                 </div>
               </div>
+
               <div className="basic">
                 <p>Bedrooms</p>
                 <div className="basic_count">
@@ -231,6 +302,7 @@ const CreateListing = () => {
                   />
                 </div>
               </div>
+
               <div className="basic">
                 <p>Beds</p>
                 <div className="basic_count">
@@ -257,6 +329,7 @@ const CreateListing = () => {
                   />
                 </div>
               </div>
+
               <div className="basic">
                 <p>Bathrooms</p>
                 <div className="basic_count">
@@ -285,9 +358,11 @@ const CreateListing = () => {
               </div>
             </div>
           </div>
+
           <div className="create-listing_step2">
             <h2>Step 2: Make your place stand out</h2>
             <hr />
+
             <h3>Tell guests what your place has to offer</h3>
             <div className="amenities">
               {facilities?.map((item, index) => (
@@ -303,7 +378,8 @@ const CreateListing = () => {
                 </div>
               ))}
             </div>
-            <h3>Add Some photos of your place</h3>
+
+            <h3>Add some photos of your place</h3>
             <DragDropContext onDragEnd={handleDragPhoto}>
               <Droppable droppableId="photos" direction="horizontal">
                 {(provided) => (
@@ -330,35 +406,38 @@ const CreateListing = () => {
                         </label>
                       </>
                     )}
+
                     {photos.length >= 1 && (
                       <>
-                        {photos.map((photo, index) => (
-                          <Draggable
-                            key={index}
-                            draggableId={`photo-${index}`}
-                            index={index}
-                          >
-                            {(provided) => (
-                              <div
-                                className="photo"
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <img
-                                  src={URL.createObjectURL(photo)}
-                                  alt="place"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => handleRemovePhoto(index)}
+                        {photos.map((photo, index) => {
+                          return (
+                            <Draggable
+                              key={index}
+                              draggableId={index.toString()}
+                              index={index}
+                            >
+                              {(provided) => (
+                                <div
+                                  className="photo"
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
                                 >
-                                  <BiTrash />
-                                </button>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+                                  <img
+                                    src={URL.createObjectURL(photo)}
+                                    alt="place"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemovePhoto(index)}
+                                  >
+                                    <BiTrash />
+                                  </button>
+                                </div>
+                              )}
+                            </Draggable>
+                          );
+                        })}
                         <input
                           id="image"
                           type="file"
@@ -375,51 +454,66 @@ const CreateListing = () => {
                         </label>
                       </>
                     )}
-                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>
             </DragDropContext>
 
-            <h3>What Make your place attractive ans exciting?</h3>
+            <h3>What make your place attractive and exciting?</h3>
             <div className="description">
               <p>Title</p>
-              <input type="text" placeholder="Title" name="title" required />
-
+              <input
+                type="text"
+                placeholder="Title"
+                name="title"
+                value={formDescription.title}
+                onChange={handleChangeDescription}
+                required
+              />
               <p>Description</p>
               <textarea
                 type="text"
                 placeholder="Description"
                 name="description"
+                value={formDescription.description}
+                onChange={handleChangeDescription}
                 required
               />
-
               <p>Highlight</p>
               <input
                 type="text"
                 placeholder="Highlight"
                 name="highlight"
+                value={formDescription.highlight}
+                onChange={handleChangeDescription}
                 required
               />
-
               <p>Highlight details</p>
               <textarea
                 type="text"
                 placeholder="Highlight details"
                 name="highlightDesc"
+                value={formDescription.highlightDesc}
+                onChange={handleChangeDescription}
                 required
               />
-              <p>Now ,set your PRICE</p>
+              <p>Now, set your PRICE</p>
               <span>$</span>
               <input
                 type="number"
                 placeholder="100"
                 name="price"
+                value={formDescription.price}
+                onChange={handleChangeDescription}
                 className="price"
                 required
               />
             </div>
           </div>
+
+          <button className="submit_btn" type="submit">
+            CREATE YOUR LISTING
+          </button>
         </form>
       </div>
     </>

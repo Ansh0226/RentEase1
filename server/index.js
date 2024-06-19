@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
+// listing api routes
+const listingRoutes=require("./routes/listing.js")
+
 // Load environment variables
 dotenv.config();
 
@@ -14,6 +17,7 @@ const authRoutes = require("./routes/auth");
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+app.use("/properties",listingRoutes);
 
 // Set up routes
 app.use("/auth", authRoutes);
