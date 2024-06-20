@@ -93,6 +93,7 @@ router.get("/", async (req, res) => {
     }
 
     res.status(200).json(listings)
+    // console.log(listings)
   } catch (err) {
     res.status(404).json({ message: "Fail to fetch listings", error: err.message })
     console.log(err)
@@ -101,5 +102,16 @@ router.get("/", async (req, res) => {
 
 
 
+// Listing Details
+router.get("/:listingId", async (req, res) => {
+  try {
+    const { listingId } = req.params
+    const listing = await Listing.findById(listingId)
+    res.status (202).json(listing)
+  } catch (err) { 
+    res.status(404).json({message:"listing not found!",error: err.message})
+  }
+})
 
-module.exports = router
+
+module.exports = router;

@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import "../styles/ListingCard.scss";
 
-import {
-  ArrowForwardIos,
-  ArrowBackIosNew,
-  Favorite,
-} from "@mui/icons-material";
+import { ArrowForwardIos, ArrowBackIosNew } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const ListingCard = ({
   listingId,
@@ -20,6 +17,8 @@ const ListingCard = ({
 }) => {
   /* SLIDER FOR IMAGES */
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
+
   // previous slide of images
   const goToPrevSlide = () => {
     setCurrentIndex(
@@ -27,12 +26,19 @@ const ListingCard = ({
         (prevIndex - 1 + listingPhotoPaths.length) % listingPhotoPaths.length
     );
   };
+
   // next slide of images
   const goToNextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % listingPhotoPaths.length);
   };
+
   return (
-    <div className="listing-card">
+    <div
+      className="listing-card"
+      onClick={() => {
+        navigate(`/properties/${listingId}`);
+      }}
+    >
       <div className="slider-container">
         <div
           className="slider"
@@ -66,6 +72,15 @@ const ListingCard = ({
           ))}
         </div>
       </div>
+      <h3>
+        {city}, {province}
+      </h3>
+      <h3>{country}</h3>
+      <p>{category}</p>
+      <p>{type}</p>
+      <p>
+        <span>${price}</span> per night
+      </p>
     </div>
   );
 };

@@ -35,9 +35,10 @@ const Listings = () => {
 
   useEffect(() => {
     getFeedListings();
-  }, [selectedCategory]);
-
+  });
+  // console.log(listings);
   return (
+    
     <>
       <div className="category-list">
         {categories?.map((category, index) => (
@@ -53,11 +54,11 @@ const Listings = () => {
           </div>
         ))}
       </div>
-
+      
       {loading ? (
         <Loader />
       ) : (
-        <div className="listings">
+        <div className="listings" >
           {listings.map(
             ({
               _id,
