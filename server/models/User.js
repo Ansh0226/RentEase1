@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema({
     default: [],
   },
 },
-    { timestamps: true }// use to know when user register return time and date
+  { timestamps: true }// use to know when user register return time and date
 )
 
 const User = mongoose.model("User", UserSchema)
