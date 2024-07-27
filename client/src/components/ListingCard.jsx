@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import "../styles/ListingCard.scss";
 
-import { ArrowForwardIos, ArrowBackIosNew } from "@mui/icons-material";
+import {
+  ArrowForwardIos,
+  ArrowBackIosNew,
+  Favorite,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setWishList } from "../redux/state";
 
 const ListingCard = ({
   listingId,
@@ -22,6 +29,7 @@ const ListingCard = ({
   /* SLIDER FOR IMAGES */
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // previous slide of images
   const goToPrevSlide = () => {
@@ -34,6 +42,29 @@ const ListingCard = ({
   // next slide of images
   const goToNextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % listingPhotoPaths.length);
+  };
+
+  // add to wish list
+  /* ADD TO WISHLIST */
+  const user = useSelector((state) => state.user);
+  const wishList = user?.wishList || [];
+
+  const isLiked = wishList?.find((item) => item?._id === listingId);
+
+  const patchWishList = async () => {
+    if (user?._id !== creator._id) {
+      const response = await fetch(
+        `http://localhost:3001/users/${user?._id}/${listingId}`,
+        {
+          method: "PATCH",
+          header: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      dispatch(setWishList(data.wishList));
+    } else { return }
   };
 
   return (
@@ -98,6 +129,20 @@ const ListingCard = ({
           </p>
         </>
       )}
+      <button
+        className="favorite"
+        onClick={(e) => {
+          e.stopPropagation();
+          patchWishList();
+        }}
+        disabled={!user}
+      >
+        {isLiked ? (
+          <Favorite sx={{ color: "red" }} />
+        ) : (
+          <Favorite sx={{ color: "white" }} />
+        )}
+      </button>
     </div>
   );
 };

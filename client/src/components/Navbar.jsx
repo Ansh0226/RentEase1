@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { IconButton } from "@mui/material";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import variables from "../styles/variables.scss";
 import { Search, Person, Menu } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  
+
   return (
     <div className="navbar">
       <a href="/">
@@ -38,7 +38,7 @@ const Navbar = () => {
         {/* buttom for bar and person icon at right */}
         <button
           className="navbar_right_account"
-            onClick={() => setDropdownMenu(!dropdownMenu)}
+          onClick={() => setDropdownMenu(!dropdownMenu)}
         >
           <Menu sx={{ color: variables.darkgrey }} />
           {!user ? (
