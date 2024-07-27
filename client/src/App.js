@@ -9,6 +9,8 @@ import ListingDetails from "./pages/ListingDetails";
 import TripList from "./pages/TripList";
 import WishList from "./pages/WishList"
 
+import PropertyList from "./pages/PropertyList";
+
 function App() {
   return (
     <div>
@@ -32,6 +34,8 @@ function App() {
           <Route path="/:userId/trips" element={<TripList />} />
           {/* wishlist path */}
           <Route path="/:userId/wishlist" element={<WishList />} />
+          {/* property List path */}
+          <Route path="/:userId/properties" element={<PropertyList />} />
 
         </Routes>
       </BrowserRouter>
