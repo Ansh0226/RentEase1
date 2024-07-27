@@ -38,14 +38,13 @@ const Listings = () => {
   });
   // console.log(listings);
   return (
-    
+
     <>
       <div className="category-list">
         {categories?.map((category, index) => (
           <div
-            className={`category ${
-              category.label === selectedCategory ? "selected" : ""
-            }`}
+            className={`category ${category.label === selectedCategory ? "selected" : ""
+              }`}
             key={index}
             onClick={() => setSelectedCategory(category.label)}
           >
@@ -54,7 +53,7 @@ const Listings = () => {
           </div>
         ))}
       </div>
-      
+
       {loading ? (
         <Loader />
       ) : (

@@ -52,7 +52,7 @@ const ListingSchema = new mongoose.Schema(
     },
     amenities: {
       type: Array,
-      default:[]
+      default: []
     },
     listingPhotoPaths: [{ type: String }], // Store photo URLs
     title: {
@@ -76,8 +76,8 @@ const ListingSchema = new mongoose.Schema(
       required: true,
     }
   },
-  { timestamps: true}
+  { timestamps: true }
 )
 
-const Listing = mongoose.model("Listing", ListingSchema )
+const Listing = mongoose.model("Listing", ListingSchema)
 module.exports = Listing
