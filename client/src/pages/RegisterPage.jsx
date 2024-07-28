@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/Register.scss";
+// import Footer from '../components/Footer';
 
 const RegisterPage = () => {
    // Make a variable which stores all the data
@@ -136,6 +137,7 @@ const handleSubmit = async (e) => {
             </form>
             <a href="/login">Already have an Account? Log In here</a>
          </div>
+         {/* <Footer/> */}
       </div>
    );
 };
