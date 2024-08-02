@@ -51,11 +51,11 @@ const RegisterPage = () => {
             navigate("/login");
          } else {
             const errorData = await response.json();
-            alert(Registration Failed! ${errorData.message});
+            alert(`Registration Failed! ${errorData.message}`);
          }
       } catch (err) {
          console.error("Registration Failed!", err.message);
-         alert(Registration Failed! ${err.message});
+         alert(`Registration Failed! ${err.message}`);
       }
    };
 
