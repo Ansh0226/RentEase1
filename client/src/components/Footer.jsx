@@ -1,20 +1,29 @@
 import "../styles/Footer.scss";
+import { Link } from "react-router-dom";
+
 import { LocationOn, LocalPhone, Email } from "@mui/icons-material";
+
 const Footer = () => {
   return (
     <div className="footer">
       <div className="footer_left">
         <a href="/">
-          <img src="/assets/logo.png" alt="logo" />
+          <img src="/assets/imagelogo.png" alt="logo" />
         </a>
       </div>
 
       <div className="footer_center">
         <h3>Useful Links</h3>
         <ul>
-          <li>About Us</li>
-          <li>Terms and Conditions</li>
-          <li>Return and Refund Policy</li>
+          <li>
+            <Link to="/about">About Us</Link>{" "}
+          </li>
+          <li>
+            <a href="/terms">Terms and Conditions</a>
+          </li>
+          <li>
+            <a href="/refund">Return and Refund Policy</a>
+          </li>
         </ul>
       </div>
 
@@ -26,7 +35,7 @@ const Footer = () => {
         </div>
         <div className="footer_right_info">
           <Email />
-          <p>rentease@support.com</p>
+          <p>RentEasy@support.com</p>
         </div>
         <img src="/assets/payment.png" alt="payment" />
       </div>
