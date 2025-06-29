@@ -7,6 +7,7 @@ import { Search, Person, Menu } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { setLogout } from "../redux/state";
 import "../styles/Navbar.scss";
+
 const Navbar = () => {
   const [dropdownMenu, setDropdownMenu] = useState(false);
 
@@ -21,11 +22,25 @@ const Navbar = () => {
         <img src="/assets/logo.png" alt="logo" />
       </a>
       <div className="navbar_search">
-        <input type="text" placeholder="Search..." value={ search} onChange={(e)=> setSearch(e.target.value)}/ >
-        <IconButton disabled={search===""}>
-          <Search sx={{ color: variables.pinkred }} onClick = {()=> {navigate(`/properties/search/${search}`)}} />
+        <input
+          type="text"
+          placeholder="Search by location or category"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <IconButton disabled={search === ""}>
+          <Search
+            sx={{ color: variables.pinkred }}
+            onClick={() => {
+              navigate(`/properties/search/${search}`);
+            }}
+          />
         </IconButton>
       </div>
+      <button className="navbar_listings_button">
+        <Link to="/list">Listings</Link>
+      </button>
+      
       <div className="navbar_right">
         {user ? (
           <a href="/create-listing" className="host">

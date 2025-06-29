@@ -13,11 +13,15 @@ import PropertyList from "./pages/PropertyList";
 import ReservationList from "./pages/ReservationList";
 import CategoryPage from "./pages/CategoryPage";
 import SearchPage from "./pages/SearchPage";
+import List from "./pages/List";
+import ScrollToTop from "./components/ScrollToTop";
+
 
 function App() {
   return (
     <div>
       <BrowserRouter>
+      <ScrollToTop />
         <Routes>
           {/* Home page by default */}
           <Route path="/" element={<HomePage />} />
@@ -40,7 +44,8 @@ function App() {
           />
           {/* search bar */}
           <Route  path="/properties/search/:search" element={<SearchPage />}/>
-
+          { /* List page */}
+          <Route path="/list" element={<List />} />
           {/* Trips path */}
           <Route path="/:userId/trips" element={<TripList />} />
           {/* wishlist path */}
