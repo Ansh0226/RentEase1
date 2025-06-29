@@ -1,0 +1,30 @@
+.aboutus-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    line-height: 1.8;
+    color: #333;
+}
+
+.aboutus-content h1 {
+    font-size: 3rem;
+    color: #007BFF;
+    /* match with your "Become a Host" blue color */
+    margin-bottom: 20px;
+}
+
+.aboutus-content p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.aboutus-content ul {
+    margin-left: 20px;
+    list-style: none;
+}
+
+.aboutus-content ul li::before {
+    content: "✓";
+    color: #007BFF;
+    margin-right: 8px;
+}
