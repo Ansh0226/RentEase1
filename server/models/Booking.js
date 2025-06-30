@@ -30,5 +30,11 @@ const BookingSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+BookingSchema.index(
+    { customerId: 1, listingId: 1, startDate: 1, endDate: 1 },
+    { unique: true }
+);
+
+
 const Booking = mongoose.model("Booking", BookingSchema)
 module.exports = Booking

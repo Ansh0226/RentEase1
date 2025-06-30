@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // API for User Registration
+
 router.post("/register", upload.single("profileImage"), async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;

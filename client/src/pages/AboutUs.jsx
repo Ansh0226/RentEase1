@@ -9,9 +9,9 @@ const AboutUs = () => {
       <Navbar />
       <div className="aboutus-container">
         <div className="aboutus-content">
-          <h1>About RentEasy</h1>
+          <h1>About RentEase</h1>
           <p>
-            At <strong>RentEasy</strong>, we believe finding your perfect stay
+            At <strong>RentEase</strong>, we believe finding your perfect stay
             should be as exciting as the journey itself. Whether you're looking
             for a cozy home for a weekend getaway or a long-term rental, we make
             it easy, safe, and simple.
@@ -22,7 +22,7 @@ const AboutUs = () => {
             unforgettable memories.
           </p>
           <p>
-            <strong>Why choose Renteasy?</strong>
+            <strong>Why choose Rentease?</strong>
           </p>
           <ul>
             <li>✔️ Verified and Trusted Listings</li>
@@ -32,7 +32,7 @@ const AboutUs = () => {
           </ul>
           <p>
             We are passionate about building a community where travelers feel at
-            home, no matter where they roam. Thank you for trusting HavenRent —
+            home, no matter where they roam. Thank you for trusting RentEase —
             your next adventure starts here!
           </p>
         </div>

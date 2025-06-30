@@ -9,11 +9,14 @@ import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
+import { enUS } from "date-fns/locale";
+import { loadStripe } from "@stripe/stripe-js";
 
 const ListingDetails = () => {
   const [loading, setLoading] = useState(true);
   const { listingId } = useParams();
   const [listing, setListing] = useState(null);
+  const [bookedDates, setBookedDates] = useState([]);
 
   const getListingDetails = async () => {
     try {
@@ -26,6 +29,22 @@ const ListingDetails = () => {
       const data = await response.json();
       setListing(data);
       setLoading(false);
+      const bookedRes = await fetch(
+        `http://localhost:3001/bookings/booked-dates/${listingId}`
+      );
+      const bookedData = await bookedRes.json();
+
+      const allBookedDates = [];
+      bookedData.forEach(({ startDate, endDate }) => {
+        let current = new Date(startDate);
+        const end = new Date(endDate);
+        while (current <= end) {
+          allBookedDates.push(new Date(current));
+          current.setDate(current.getDate() + 1);
+        }
+      });
+
+      setBookedDates(allBookedDates);
     } catch (err) {
       console.log("Fetch Listing Details failed", err.message);
     }
@@ -51,42 +70,62 @@ const ListingDetails = () => {
   const end = new Date(dateRange[0].endDate);
   const dayCount = Math.round((end - start) / (1000 * 60 * 60 * 24));
 
-
-
-  // submit booking
   /* SUBMIT BOOKING */
-  const customerId = useSelector((state) => state?.user?._id)
+  const customerId = useSelector((state) => state?.user?._id);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const stripePromise = loadStripe(
+    process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+  );
 
   const handleSubmit = async () => {
+    const stripe = await stripePromise;
+
+    if (!stripe) {
+      console.error("Stripe failed to load.");
+      return;
+    }
+
     try {
-      const bookingForm = {
-        customerId,
+      const body = {
         listingId,
+        price: listing.price * dayCount,
+        customerId,
         hostId: listing.creator._id,
         startDate: dateRange[0].startDate.toDateString(),
         endDate: dateRange[0].endDate.toDateString(),
-        totalPrice: listing.price * dayCount,
+      };
+
+      const response = await fetch(
+        "http://localhost:3001/stripe/create-checkout-session",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! ${response.status} - ${errorText}`);
       }
 
-      const response = await fetch("http://localhost:3001/bookings/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingForm)
-      })
+      const session = await response.json();
 
-      if (response.ok) {
-        navigate(`/${customerId}/trips`)
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result.error) {
+        console.error("Stripe redirect failed:", result.error.message);
       }
     } catch (err) {
-      console.log("Submit Booking Failed.", err.message)
+      console.error("Stripe Checkout Failed:", err.message);
     }
-  }
-
-
+  };
 
   return loading ? (
     <Loader />
@@ -165,6 +204,8 @@ const ListingDetails = () => {
                 ranges={dateRange}
                 onChange={handleSelect}
                 minDate={new Date()} // Prevent selecting past dates
+                locale={enUS}
+                disabledDates={bookedDates}
               />
               {dayCount > 1 ? (
                 <h2>
@@ -179,13 +220,13 @@ const ListingDetails = () => {
               <p>Start Date: {dateRange[0].startDate.toDateString()}</p>
               <p>End Date: {dateRange[0].endDate.toDateString()}</p>
               <button className="button" type="submit" onClick={handleSubmit}>
-                BOOKING
+                Proceed for payment
               </button>
             </div>
           </div>
         </div>
-        </div>
-        <Footer/>
+      </div>
+      <Footer />
     </>
   );
 };

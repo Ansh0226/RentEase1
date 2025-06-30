@@ -7,49 +7,62 @@ const TermsAndConditions = () => {
   return (
     <>
       <Navbar />
-      <div className="terms-container">
-        <h1>Terms and Conditions</h1>
+      <div className="terms-wrapper">
+        <div className="terms-header">
+          <h1>Terms & Conditions</h1>
+          <p>Last Updated: June 30, 2025</p>
+        </div>
 
-        <p>
-          Welcome to <strong>RenyEasy</strong>! Please read these terms...
-        </p>
+        <div className="terms-section">
+          <h2>1. Introduction</h2>
+          <p>
+            Welcome to <strong>RentEase</strong>. These Terms and Conditions
+            govern your use of our platform. By accessing or using the website,
+            you agree to comply with these terms.
+          </p>
+        </div>
 
-        <h2>1. Acceptance of Terms</h2>
-        <p>By accessing or using RentEasy...</p>
+        <div className="terms-section">
+          <h2>2. User Responsibilities</h2>
+          <ul>
+            <li>Keep your account credentials secure.</li>
+            <li>Provide accurate and truthful information.</li>
+            <li>Use the platform only for lawful purposes.</li>
+          </ul>
+        </div>
 
-        <h2>2. User Responsibilities</h2>
-        <ul>
-          <li>Provide accurate and updated info.</li>
-          <li>Respect the rights of others.</li>
-          <li>Use only for lawful purposes.</li>
-        </ul>
-        <h2>3. Listings and Bookings</h2>
-        <p>
-          All listings are created by individual hosts. RentEasy acts as a
-          platform and is not directly involved in transactions between guests
-          and hosts.
-        </p>
+        <div className="terms-section">
+          <h2>3. Booking & Payments</h2>
+          <p>
+            All bookings and transactions are facilitated via our secure payment
+            gateway. Service charges and taxes may apply as shown during
+            checkout.
+          </p>
+        </div>
 
-        <h2>4. Payment and Fees</h2>
-        <p>
-          All payments must be made through our secure payment system. Service
-          fees may apply and will be disclosed during booking.
-        </p>
+        <div className="terms-section">
+          <h2>4. Cancellations & Refunds</h2>
+          <p>
+            Each host sets their own cancellation policy. Please review it
+            before confirming your booking.
+          </p>
+        </div>
 
-        <h2>5. Changes to Terms</h2>
-        <p>
-          We reserve the right to update or modify these Terms at any time
-          without prior notice.
-        </p>
+        <div className="terms-section">
+          <h2>5. Modifications</h2>
+          <p>
+            RentEase reserves the right to modify these terms at any time.
+            Continued use of the platform implies acceptance of the updated
+            terms.
+          </p>
+        </div>
 
-        <p>
-          By continuing to use RentEasy after changes are made, you accept and
-          agree to the revised Terms.
-        </p>
-
-        <p className="thank-you">
-          Thank you for choosing <strong>RentEast</strong>!
-        </p>
+        <div className="terms-footer">
+          <p>
+            Thank you for using <strong>RentEase</strong>. Your trust matters to
+            us.
+          </p>
+        </div>
       </div>
       <Footer />
     </>

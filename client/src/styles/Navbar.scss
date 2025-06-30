@@ -41,6 +41,35 @@
         }
     }
 
+    &_listings_button {
+        background: linear-gradient(135deg, $blue 0%, lighten($blue, 10%) 100%);
+        border: none;
+        padding: 10px 22px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-weight: 700;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      
+        a {
+          text-decoration: none;
+          color: white;
+          font-weight: 700;
+        }
+      
+        &:hover {
+          transform: scale(1.05);
+          background: linear-gradient(135deg, darken($blue, 5%) 0%, lighten($blue, 15%) 100%);
+          box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+      
+        @include sm {
+          padding: 8px 16px;
+          font-size: 14px;
+        }
+      }
+      
     &_right {
         display: flex;
         align-items: center;
