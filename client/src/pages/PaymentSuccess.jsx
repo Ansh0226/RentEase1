@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import "../styles/PaymentSuccess.scss";
