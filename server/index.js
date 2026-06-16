@@ -13,11 +13,12 @@ const authRoutes = require("./routes/auth");
 app.use(express.json());
 
 // CORS setup
-app.use(cors({
-  origin: "http://localhost:3000",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
-}));
+// app.use(cors({
+//   origin: "http://localhost:3000",
+//   methods: ["GET", "POST"],
+//   allowedHeaders: ["Content-Type"]
+// }));
+app.use(cors()); // Allow all origins for development; adjust in production
 
 // Serve static files
 app.use(express.static("public"));
@@ -30,7 +31,7 @@ app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 
 // MongoDB and server start
-const PORT = 3001;
+const PORT = process.env.PORT|| 3001;
 mongoose
   .connect(process.env.MONGO_URL, {
     dbName: "rentease"
