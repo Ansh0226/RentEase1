@@ -40,3 +40,8 @@ mongoose
     app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
   })
   .catch((err) => console.log(`${err} did not connect`));
+    
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the RentEase API");
+});
