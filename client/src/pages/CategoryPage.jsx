@@ -7,7 +7,7 @@ import { setListings } from "../redux/state";
 import Loader from "../components/Loader";
 import ListingCard from "../components/ListingCard";
 import Footer from "../components/Footer";
-
+const BASE_URL = process.env.REACT_APP_BASE_ADDRESS;
 const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
   const { category } = useParams();
@@ -18,7 +18,7 @@ const CategoryPage = () => {
   const getFeedListings = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/properties?category=${category}`,
+        `${BASE_URL}/properties?category=${category}`,
         {
           method: "GET",
         }

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { setPropertyList } from "../redux/state";
 import Loader from "../components/Loader";
 import Footer from "../components/Footer";
-
+const BASE_URL = process.env.REACT_APP_BASE_ADDRESS;
 const PropertyList = () => {
     const [loading, setLoading] = useState(true)
     const user = useSelector((state) => state.user)
@@ -16,7 +16,7 @@ const PropertyList = () => {
     const dispatch = useDispatch()
     const getPropertyList = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/users/${user._id}/properties`, {
+            const response = await fetch(`${BASE_URL}/users/${user._id}/properties`, {
                 method: "GET"
             })
             const data = await response.json()

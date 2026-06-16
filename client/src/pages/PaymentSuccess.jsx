@@ -12,7 +12,7 @@ const PaymentSuccess = () => {
   const [bookingData, setBookingData] = useState(null); // To store session data
 
   const hasCreatedBookingRef = useRef(false);
-
+const BASE_URL = process.env.REACT_APP_BASE_ADDRESS;
   useEffect(() => {
     const createBooking = async () => {
       if (hasCreatedBookingRef.current) return;
@@ -20,12 +20,12 @@ const PaymentSuccess = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3001/stripe/session-details/${sessionId}`
+          `${BASE_URL}/stripe/session-details/${sessionId}`
         );
         const session = await response.json();
         setBookingData(session);
 
-        const res = await fetch("http://localhost:3001/bookings/create", {
+        const res = await fetch(`${BASE_URL}/bookings/create`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

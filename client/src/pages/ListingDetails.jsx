@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
 import { enUS } from "date-fns/locale";
 import { loadStripe } from "@stripe/stripe-js";
-
+const BASE_URL = process.env.REACT_APP_BASE_ADDRESS;
 const ListingDetails = () => {
   const [loading, setLoading] = useState(true);
   const { listingId } = useParams();
@@ -21,7 +21,7 @@ const ListingDetails = () => {
   const getListingDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/properties/${listingId}`,
+        `${BASE_URL}/properties/${listingId}`,
         {
           method: "GET",
         }
@@ -30,7 +30,7 @@ const ListingDetails = () => {
       setListing(data);
       setLoading(false);
       const bookedRes = await fetch(
-        `http://localhost:3001/bookings/booked-dates/${listingId}`
+        `${BASE_URL}/bookings/booked-dates/${listingId}`
       );
       const bookedData = await bookedRes.json();
 
@@ -98,7 +98,7 @@ const ListingDetails = () => {
       };
 
       const response = await fetch(
-        "http://localhost:3001/stripe/create-checkout-session",
+        `${BASE_URL}/stripe/create-checkout-session`,
         {
           method: "POST",
           headers: {
@@ -141,7 +141,7 @@ const ListingDetails = () => {
           {listing.listingPhotoPaths?.map((item, index) => (
             <img
               key={index}
-              src={`http://localhost:3001/${item?.replace("public", "")}`}
+              src={`${BASE_URL}/${item?.replace("public", "")}`}
               alt={`listing photo ${index + 1}`}
             />
           ))}
@@ -160,7 +160,7 @@ const ListingDetails = () => {
           {listing.creator && (
             <>
               <img
-                src={`http://localhost:3001/${listing.creator.profileImagePath?.replace(
+                src={`${BASE_URL}/${listing.creator.profileImagePath?.replace(
                   "public",
                   ""
                 )}`}

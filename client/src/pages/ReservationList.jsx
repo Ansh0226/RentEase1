@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setReservationList } from "../redux/state";
 import ListingCard from "../components/ListingCard";
 import Footer from "../components/Footer";
-
+const BASE_URL = process.env.REACT_APP_BASE_ADDRESS;
 const ReservationList = () => {
   const [loading, setLoading] = useState(true);
   const userId = useSelector((state) => state.user._id);
@@ -18,7 +18,7 @@ const ReservationList = () => {
   const getReservationList = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/users/${userId}/reservations`,
+        `${BASE_URL}/users/${userId}/reservations`,
         {
           method: "GET",
         }
